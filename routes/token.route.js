@@ -31,16 +31,13 @@ tokenController.post("/create", async (req, res) => {
 
 // delete
 
-
 // pagination functionality
 tokenController.get("/", async (req, res) => {
-  let { page } = req.query;
+  let page = req?.query?.page || 1;
+  let limit = req?.query?.limit || 6;
 
-  if (page > 10) {
-    page = 1;
-  }
-  const limit = 6;
   let skip = (page - 1) * limit;
+  skip = skip>=6?0:skip
 
   const tokenData = await tokenModel.find().skip(skip).limit(limit);
   res.status(200).send({ msg: "pagination datas", tokenData });
